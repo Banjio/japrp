@@ -1,0 +1,4 @@
+ffmpeg-python
+sounddevice
+pyradios
+pyqt5=5.15.2
