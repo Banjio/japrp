@@ -26,17 +26,43 @@
     <string>Just press play and Metal will ring in your ears</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="playBtn">
    <property name="geometry">
     <rect>
-     <x>140</x>
+     <x>60</x>
      <y>160</y>
      <width>99</width>
      <height>27</height>
     </rect>
    </property>
    <property name="text">
-    <string>Start Play</string>
+    <string>play</string>
+   </property>
+   <property name="icon">
+    <iconset theme="SP_MediaPlay"/>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="enterUrl">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>70</y>
+     <width>104</width>
+     <height>78</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="setBtn">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>160</y>
+     <width>99</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>set station</string>
    </property>
   </widget>
  </widget>
