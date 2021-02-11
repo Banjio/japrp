@@ -9,7 +9,7 @@ class RadioBrowserSimple(RadioBrowser):
 
 
     def search_limited(self, name, limit=20, **kwargs):
-        return self.search(name, limit=limit, **kwargs)
+        return self.search(name=name, limit=limit, **kwargs)
 
     def search_filter_by_country(self, name, country):
         return self.search(name=name, country=country)

@@ -16,7 +16,7 @@ class MyApp(QDialog):
         if _BACKEND == "vlc":
             self.player = VlcBackend()
         else:
-            self.player = QtMediaPlayerWrapper
+            self.player = QtMediaPlayerWrapper()
         self.ui.playBtn.clicked.connect(self.start_playing)
         self._url = ""
         self.ui.setBtn.clicked.connect(self.set_url)
