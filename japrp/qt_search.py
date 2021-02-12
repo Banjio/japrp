@@ -4,6 +4,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPainter
 from japrp.parser import RadioBrowserSimple
+from japrp.json_view import JsonViewer
 from pprint import pprint
 import json
 
@@ -29,9 +30,12 @@ class ClickableSearchResult(QWidget):
         self.details.clicked.connect(self.onClick)
 
     def onClick(self):
-        self.msg.setText(json.dumps(self.value))
+        #self.msg.setText(j)
+        json_view = JsonViewer(jdata=self.value)
+        json_view.show()
+        #self.msg.show()
 
-    def showdialog():
+    def showdialog(self):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
 
