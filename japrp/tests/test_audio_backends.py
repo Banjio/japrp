@@ -1,6 +1,6 @@
 from japrp.audio_backends import audio_backend_vlc, audio_backend_pyqt5
 from time import sleep
-_SLEEP_TIMER = 8
+_SLEEP_TIMER = 15
 backend = audio_backend_vlc.VlcBackend()
 backend_pyqt5 = audio_backend_pyqt5.QtMediaPlayerWrapper()
 

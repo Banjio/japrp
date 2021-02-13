@@ -4,7 +4,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QPainter
 from japrp.parser import RadioBrowserSimple
-from japrp.json_view import JsonViewer
+from japrp.dict_viewer_pyqt5 import DictViewTree, DictTreeViewAsDialog
 from pprint import pprint
 import json
 
@@ -13,64 +13,39 @@ class ClickableSearchResult(QWidget):
     def __init__(self, name, value):
         super().__init__()
         self.name_ref = name
-        #self.setText(self.name_ref)
         self.value = value
 
-        self.media_button = QPushButton(self.name_ref)
+        self.station_name = QLabel(self.name_ref)
+        self.play_btn = QPushButton("Play")
         self.details = QPushButton("Details")
-
-        self.details.clicked.connect(self.onClick)
-
         self.hbox = QHBoxLayout()
-        self.hbox.addWidget(self.media_button)
+        self.hbox.addWidget(self.station_name)
+        self.hbox.addWidget(self.play_btn)
         self.hbox.addWidget(self.details)
         self.setLayout(self.hbox)
 
-        self.msg = QMessageBox()
-        self.details.clicked.connect(self.onClick)
+        self.details.clicked.connect(self.show_details)
 
-    def onClick(self):
-        #self.msg.setText(j)
-        json_view = JsonViewer(jdata=self.value)
-        json_view.show()
-        #self.msg.show()
+    def show_details(self):
+        view = DictTreeViewAsDialog(dict_=self.value)
+        view.exec()
 
-    def showdialog(self):
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-
-        msg.setText("This is a message box")
-        msg.setInformativeText("This is additional information")
-        msg.setWindowTitle("MessageBox demo")
-        msg.setDetailedText("The details are as follows:")
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        msg.buttonClicked.connect()
-
-        retval = msg.exec_()
-        print
-        "value of pressed message box button:", retval
-
-    def msgbtn(i):
-        print
-        "Button pressed is:", i.text()
-
-class MainWindow(QMainWindow):
+class RadioSearcher(QWidget):
 
     def __init__(self, *args, **kwargs):
-        super(MainWindow, self).__init__(*args, **kwargs)
+        super(QWidget, self).__init__(*args, **kwargs)
 
-        self.controls = QWidget()
-        self.controlsLayout = QVBoxLayout()
+        self.layout = QVBoxLayout()
 
         self.search_results = []
-        self.controls.setLayout(self.controlsLayout)
+        self.setLayout(self.layout)
 
         # Scroll area, i.e. space where results are displayed
         self.scroll = QScrollArea()
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll.setWidgetResizable(True)
-        self.scroll.setWidget(self.controls)
+        self.scroll.setWidget(self)
 
         self.searchbar = QLineEdit()
         #self.searchbar.setGeometry(QtCore.QRect(140, 70, 104, 78))
@@ -83,14 +58,12 @@ class MainWindow(QMainWindow):
         containerLayout.addWidget(self.scroll)
         container.setLayout(containerLayout)
 
-        self.setCentralWidget(container)
+        #self.setCentralWidget(self)
         self.setGeometry(600, 100, 800, 600)
         self.setWindowTitle("Control Panel")
 
         self.searchbar.returnPressed.connect(self.search_radio)
         self.searcher = RadioBrowserSimple()
-
-
 
 
     def search_radio(self):
@@ -100,12 +73,16 @@ class MainWindow(QMainWindow):
         res = self.searcher.process_result(temp_search)
         for key, val in res.items():
             widget = ClickableSearchResult(key, val)
-            widget.media_button.clicked.connect(widget.onClick)
+            widget.play_btn.clicked.connect(lambda: self.openPlayer(widget))
             self.search_results.append(widget)
             self.controlsLayout.addWidget(widget)
 
+    def openPlayer(self, clickable_search_result):
+        print(clickable_search_result.value)
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    w = MainWindow()
+    w = RadioSearcher()
     w.show()
     sys.exit(app.exec_())

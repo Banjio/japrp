@@ -84,3 +84,6 @@ and can be activated with Alt + Key
 * setIcon(): Assign icon
 
 
+# Useful links and bocks
+
+* The ultimate PyQt webiste: https://www.learnpyqt.com/
