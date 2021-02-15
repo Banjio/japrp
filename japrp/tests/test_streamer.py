@@ -1,4 +1,4 @@
-from japrp.streamer import UrlStreamer
+from japrp.deprecated.streamer import UrlStreamer
 
 def test_play():
     import time

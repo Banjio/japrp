@@ -1,5 +1,6 @@
 ffmpeg-python
 sounddevice
 pyradios
-pyqt5=5.15.2
+pyqt5==5.15.2
 requests
+python-vlc

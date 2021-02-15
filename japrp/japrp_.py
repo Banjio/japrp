@@ -4,8 +4,8 @@ import sys
 #sys.path.append("../")
 from japrp.audio_backends.audio_backend_vlc import VlcBackend
 from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
-from japrp.qt_search import RadioSearcher
-from japrp.player_qt import Player
+from japrp.app_parts.qt_search import RadioSearcher
+from japrp.app_parts.player_qt import Player
 
 _BACKEND = "vlc"
 
@@ -22,6 +22,7 @@ class MyApp(QDialog):
         self.ui.playBtn.clicked.connect(self.start_playing)
         self._url = ""
         self.ui.setBtn.clicked.connect(self.set_url)
+
 
     def start_playing(self):
         #self.stream = subprocess.Popen(["python", "-m", "streamer_script.py"], stdout=sys.stdout)
@@ -66,7 +67,9 @@ class MyApp2(QMainWindow):
         self.setCentralWidget(self.container)
         #self.setLayout(self.layout)
 
-    def
+
+
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
