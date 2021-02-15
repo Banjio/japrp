@@ -1,9 +1,11 @@
-from PyQt5.QtWidgets import QDialog, QApplication
+from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow, QHBoxLayout, QWidget
 from japrb_gui import *
 import sys
 #sys.path.append("../")
 from japrp.audio_backends.audio_backend_vlc import VlcBackend
 from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
+from japrp.qt_search import RadioSearcher
+from japrp.player_qt import Player
 
 _BACKEND = "vlc"
 
@@ -48,9 +50,27 @@ class MyApp(QDialog):
        if self.player is not None:
            self.player.stop()
 
+class MyApp2(QMainWindow):
+
+    def __init__(self):
+        super(MyApp2, self).__init__()
+
+        self.player = Player(parent=self)
+        self.searcher = RadioSearcher()
+        self.container = QWidget()
+        self.containerLayout = QHBoxLayout()
+       #self.layout.addWidget(self.searcher)
+        self.containerLayout.addWidget(self.searcher)
+        self.containerLayout.addWidget(self.player)
+        self.container.setLayout(self.containerLayout)
+        self.setCentralWidget(self.container)
+        #self.setLayout(self.layout)
+
+    def
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    w = MyApp()
+    w = MyApp2()
     w.show()
     sys.exit(app.exec())
 

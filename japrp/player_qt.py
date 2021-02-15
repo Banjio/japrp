@@ -8,8 +8,8 @@ _BACKEND = "vlc"
 
 class Player(QWidget):
 
-    def __init__(self, value_dict=None):
-        super().__init__()
+    def __init__(self, value_dict=None, parent=None):
+        super().__init__(parent=parent)
         self.layout = QGridLayout()
         if value_dict is None:
             value_dict = {}

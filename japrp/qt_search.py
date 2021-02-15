@@ -30,40 +30,43 @@ class ClickableSearchResult(QWidget):
         view = DictTreeViewAsDialog(dict_=self.value)
         view.exec()
 
-class RadioSearcher(QWidget):
+class RadioSearcher(QMainWindow):
 
     def __init__(self, *args, **kwargs):
-        super(QWidget, self).__init__(*args, **kwargs)
-
-        self.layout = QVBoxLayout()
+        super().__init__(*args, **kwargs)
 
         self.search_results = []
-        self.setLayout(self.layout)
+        self.searchbar = QLineEdit()
 
         # Scroll area, i.e. space where results are displayed
         self.scroll = QScrollArea()
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.scroll.setWidgetResizable(True)
-        self.scroll.setWidget(self)
+        #self.scroll.setWidget(self)
 
-        self.searchbar = QLineEdit()
         #self.searchbar.setGeometry(QtCore.QRect(140, 70, 104, 78))
 
         # Add the items to VBoxLayout (applied to container widget)
         # which encompasses the whole window.
-        container = QWidget()
-        containerLayout = QVBoxLayout()
-        containerLayout.addWidget(self.searchbar)
-        containerLayout.addWidget(self.scroll)
-        container.setLayout(containerLayout)
+        #container = QWidget()
+        #containerLayout = QVBoxLayout()
+        #containerLayout.addWidget(self.searchbar)
+        #containerLayout.addWidget(self.scroll)
+        #container.setLayout(containerLayout)
+        self.container = QWidget()
+        self.containerLayout = QVBoxLayout()
+        self.containerLayout.addWidget(self.searchbar)
+        self.containerLayout.addWidget(self.scroll)
+        self.container.setLayout(self.containerLayout)
+        #self.setLayout(self.layout)
 
-        #self.setCentralWidget(self)
         self.setGeometry(600, 100, 800, 600)
         self.setWindowTitle("Control Panel")
 
         self.searchbar.returnPressed.connect(self.search_radio)
         self.searcher = RadioBrowserSimple()
+        self.setCentralWidget(self.container)
 
 
     def search_radio(self):
@@ -75,7 +78,8 @@ class RadioSearcher(QWidget):
             widget = ClickableSearchResult(key, val)
             widget.play_btn.clicked.connect(lambda: self.openPlayer(widget))
             self.search_results.append(widget)
-            self.controlsLayout.addWidget(widget)
+            self.containerLayout.addWidget(widget)
+
 
     def openPlayer(self, clickable_search_result):
         print(clickable_search_result.value)
