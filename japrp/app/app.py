@@ -9,6 +9,7 @@ from japrp.app_parts.qt_search import ClickableSearchResult
 from japrp.parser import RadioBrowserSimple
 from japrp.audio_backends.audio_backend_vlc import VlcBackend
 from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
+from functools import partial
 
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
@@ -53,39 +54,44 @@ class Japrp(QMainWindow):
         res = self.searcher.process_result(temp_search)
         for key, val in res.items():
             widget = ClickableSearchResult(key, val)
-            widget.play_btn.clicked.connect(lambda: self.openPlayer(widget))
+            #print(widget)
             self.search_results.append(widget)
+            # Use partial instead of lambda functions here, because with lambda the value passed to the function will
+            # be set to len(list) after it is created -> see for details: https://stackoverflow.com/questions/45090982/passing-extra-arguments-through-connect
+            widget.play_btn.clicked.connect(partial(self.openPlayer, len(self.search_results) - 1))
             self.containerLayout.addWidget(widget)
 
         self.containerWidget.setLayout(self.containerLayout)
         self.ui.searchedContent.setWidget(self.containerWidget)
 
-    def openPlayer(self, widget):
+    def openPlayer(self, idx_widget):
         # TODO: There is a bug where we always acess the same widget, Downloading image not working
         self.player.stop()
-        print(widget.value["url"])
-        self.player.set_media(widget.value["url"])
+        print(idx_widget)
+        self.player.set_media(self.search_results[idx_widget].value["url"])
         self.player.play()
-        temp_icon_value = widget.value.get("favicon")
-        if temp_icon_value is not None or len(temp_icon_value):
-            icon_decoded = requests.get(temp_icon_value)
-            if icon_decoded.ok:
+        temp_icon_value = self.search_results[idx_widget].value.get("favicon")
+        if temp_icon_value is not None:
+            if len(temp_icon_value) > 0:
+                icon_decoded = requests.get(temp_icon_value)
+                if icon_decoded.ok:
                 #temp = StringIO()
                 #with open(temp, "wb") as f:
                 #    f.write(icon_decoded.content)
                 #    self.ui.sender_icon.setPixmap(QPixmap(temp))
-                pass
-            else:
-                self.ui.sender_icon.setPixmap(self._station_icon_default)
+                 pass
+                else:
+                    self.ui.sender_icon.setPixmap(self._station_icon_default)
 
         else:
             self.ui.sender_icon.setPixmap(self._station_icon_default)
 
-        temp_station_name = widget.value.get("name")
-        if temp_station_name is not None or len(temp_station_name):
-            self.ui.sender_name.setText(temp_station_name)
-        else:
-            self.ui.sender_name.setText(self._station_name_default)
+        temp_station_name = self.search_results[idx_widget].value.get("name")
+        if temp_station_name is not None:
+            if len(temp_station_name) > 0:
+                self.ui.sender_name.setText(temp_station_name)
+            else:
+                self.ui.sender_name.setText(self._station_name_default)
 
 
     def start_playing(self):
