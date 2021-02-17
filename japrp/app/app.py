@@ -41,7 +41,7 @@ class Japrp(QMainWindow):
 
         self.ui.sender_name.setText(self._station_name_default)
 
-        self.ui.volumeSlider.setValue(50)
+        self.ui.volumeSlider.setValue(100)
         self.ui.volumeSlider.valueChanged.connect(self.set_volume)
 
     @pyqtSlot()

@@ -89,6 +89,13 @@ class AudiostreamBackend(ABC):
         """
         raise NotImplementedError
 
+    def get_volume(self) -> int:
+        """
+        Get volume of the current player instance
+
+        :return: Int value of the volume
+        """
+        raise NotImplementedError
 if __name__ == "__main__":
     import time
     #URL = "http://bob.hoerradar.de/radiobob-hartesaite-mp3-hq?sABC=6020sp0s%230%23r731s0685son37qn82q119rrn30n0ss5%23zrqvncynlre&=&amsparams=playerid:mediaplayer;skey:1612774415"  # BBC

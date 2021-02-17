@@ -17,6 +17,8 @@ class VlcBackend(AudiostreamBackend):
         super(VlcBackend, self).__init__()
         self._instance = vlc.Instance("--vout none " + cmd)
         self.media_player = self._instance.media_player_new()
+        self._is_playlist = False
+        self._is_playing = False
 
     def set_media(self, url: str, media_type: Union[str, None] = 'infer'):
         """
@@ -33,11 +35,13 @@ class VlcBackend(AudiostreamBackend):
             self.media_player = self._instance.media_list_player_new()
             self.media = self._instance.media_list_new([url])
             self.media_player.set_media_list(self.media)
+            self._is_playlist = True
         else:
             self.media_player = self._instance.media_player_new()
             self.media = self._instance.media_new(url)
             self.media.parse()
             self.media_player.set_media(self.media)
+            self._is_playlist = False
 
     def play(self):
         """
@@ -50,16 +54,28 @@ class VlcBackend(AudiostreamBackend):
             raise TypeError("Error playing stream")
         else:
             self.media_player.play()
+            self._is_playing = True
 
     def pause(self):
         """
         Implement the pause method used in vlc.player.pause()
         """
         self.media_player.pause()
+        self._is_playing = False
 
     def stop(self):
         self.media = None
         self.media_player.stop()
+        self._is_playing = False
 
     def set_volume(self, value: int):
-        self.media_player.audio_set_volume(value)
+        if self._is_playlist:
+            self.media_player.get_media_player().audio_set_volume(value)
+        else:
+            self.media_player.audio_set_volume(value)
+
+    def get_volume(self) -> int:
+        if self._is_playlist:
+            return self.media_player.get_media_player().audio_get_volume()
+        else:
+            return self.media_player.audio_get_volume()
