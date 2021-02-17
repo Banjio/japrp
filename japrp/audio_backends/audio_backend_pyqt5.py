@@ -53,3 +53,9 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
         """
         self.media = None
         self.media_player.stop()
+
+    def set_volume(self, value: int):
+        """
+        call pyqt5.MediaPlayer().setVolume(value)
+        """
+        self.media_player.setVolume(value)

@@ -36,6 +36,11 @@ def func(self, var: int):
 ```
 * Use ```from functools import partial``` to dynamically create buttons and connect them to a function with varying inputs
 
+# Link References (I.e. Cool Projects)
+
+* __Winamp Clone with Qt5__: https://www.learnpyqt.com/examples/failamp-multimedia-player/
+
+
 # Widget References
 
 ## QLabel

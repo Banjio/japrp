@@ -60,3 +60,6 @@ class VlcBackend(AudiostreamBackend):
     def stop(self):
         self.media = None
         self.media_player.stop()
+
+    def set_volume(self, value: int):
+        self.media_player.audio_set_volume(value)

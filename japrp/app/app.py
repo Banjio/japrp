@@ -41,6 +41,9 @@ class Japrp(QMainWindow):
 
         self.ui.sender_name.setText(self._station_name_default)
 
+        self.ui.volumeSlider.setValue(50)
+        self.ui.volumeSlider.valueChanged.connect(self.set_volume)
+
     @pyqtSlot()
     def search_radio(self):
         # To dynamically create and add to scroll area we need a container. We create the container inside the function, s.t. it is reseted between searchs
@@ -66,9 +69,7 @@ class Japrp(QMainWindow):
 
     @pyqtSlot(int)
     def openPlayer(self, idx_widget):
-        # TODO: There is a bug where we always acess the same widget, Downloading image not working
         self.player.stop()
-        print(idx_widget)
         self.player.set_media(self.search_results[idx_widget].value["url"])
         self.player.play()
         temp_icon_value = self.search_results[idx_widget].value.get("favicon")
@@ -107,6 +108,10 @@ class Japrp(QMainWindow):
     def stop_playing(self):
         if self.player is not None:
             self.player.stop()
+
+    @pyqtSlot()
+    def set_volume(self):
+        self.player.set_volume(self.ui.volumeSlider.value())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

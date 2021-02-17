@@ -88,3 +88,13 @@ def test_pyqt5_mediaplayer_else():
     backend_pyqt5.media_player.play()
     sleep(_SLEEP_TIMER)
     backend_pyqt5.media_player.stop()
+
+def test_vlc_set_volume():
+    #url = "https://swr-swr3-live.cast.addradio.de/swr/swr3/live/aac/96/stream.aac"
+    url = "https://pehlanashahdlive-lh.akamaihd.net/i/PehlaNashaHDLive_1@335229/master.m3u8"
+
+    backend.set_media(url, media_type="acc")
+    backend.media_player.play()
+
+    backend.set_volume(110)
+    sleep(_SLEEP_TIMER)
