@@ -22,6 +22,20 @@ Everything is a widget. Every GUI has a top-level widget and the rest are called
 _QDialog, QWidget or QMainWindows_, thus a guid has to inherit 
 from one of these classes
 
+# Best Practices
+
+* Although not neccessary consider wrapping function that connect a widget to a function (i.e. assigining a slot) for 
+example ```Qpushbutton.clicked.connect(on_click_func)```  with the decorator ```from PyQt5.Core import pyqtSlot``` as it
+  reduces the memory footprint.
+```
+from pyqt5.QtCore import pyqtSlot
+...
+@pyQtSlot(int)
+def func(self, var: int):
+  do_something()
+```
+* Use ```from functools import partial``` to dynamically create buttons and connect them to a function with varying inputs
+
 # Widget References
 
 ## QLabel

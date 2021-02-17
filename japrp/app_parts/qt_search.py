@@ -1,7 +1,7 @@
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QPainter
 from japrp.parser import RadioBrowserSimple
 from japrp.dict_viewer_pyqt5 import DictViewTree, DictTreeViewAsDialog
@@ -26,6 +26,7 @@ class ClickableSearchResult(QWidget):
 
         self.details.clicked.connect(self.show_details)
 
+    @pyqtSlot()
     def show_details(self):
         view = DictTreeViewAsDialog(dict_=self.value)
         view.exec()

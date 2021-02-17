@@ -1,9 +1,9 @@
 import sys
 import requests
-from io import StringIO
+from io import StringIO, BytesIO
 from japrp.app.main_window import Ui_MainWindow
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QPixmap
 from japrp.app_parts.qt_search import ClickableSearchResult
 from japrp.parser import RadioBrowserSimple
@@ -41,7 +41,7 @@ class Japrp(QMainWindow):
 
         self.ui.sender_name.setText(self._station_name_default)
 
-
+    @pyqtSlot()
     def search_radio(self):
         # To dynamically create and add to scroll area we need a container. We create the container inside the function, s.t. it is reseted between searchs
         self.containerWidget = QWidget()
@@ -64,6 +64,7 @@ class Japrp(QMainWindow):
         self.containerWidget.setLayout(self.containerLayout)
         self.ui.searchedContent.setWidget(self.containerWidget)
 
+    @pyqtSlot(int)
     def openPlayer(self, idx_widget):
         # TODO: There is a bug where we always acess the same widget, Downloading image not working
         self.player.stop()
@@ -75,11 +76,9 @@ class Japrp(QMainWindow):
             if len(temp_icon_value) > 0:
                 icon_decoded = requests.get(temp_icon_value)
                 if icon_decoded.ok:
-                #temp = StringIO()
-                #with open(temp, "wb") as f:
-                #    f.write(icon_decoded.content)
-                #    self.ui.sender_icon.setPixmap(QPixmap(temp))
-                 pass
+                    qp = QPixmap()
+                    qp.loadFromData(icon_decoded.content)
+                    self.ui.sender_icon.setPixmap(qp)
                 else:
                     self.ui.sender_icon.setPixmap(self._station_icon_default)
 
@@ -93,7 +92,7 @@ class Japrp(QMainWindow):
             else:
                 self.ui.sender_name.setText(self._station_name_default)
 
-
+    @pyqtSlot()
     def start_playing(self):
         # self.stream = subprocess.Popen(["python", "-m", "streamer_script.py"], stdout=sys.stdout)
         if _BACKEND == "vlc":
@@ -104,6 +103,7 @@ class Japrp(QMainWindow):
         else:
             self.player.play()
 
+    @pyqtSlot()
     def stop_playing(self):
         if self.player is not None:
             self.player.stop()
