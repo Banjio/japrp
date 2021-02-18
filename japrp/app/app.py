@@ -14,6 +14,7 @@ from functools import partial
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
 
+#https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
 class Japrp(QMainWindow):
 
     def __init__(self):
@@ -32,7 +33,7 @@ class Japrp(QMainWindow):
         self.ui.stop.clicked.connect(self.stop_playing)
 
         self.ui.searchedContent.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.ui.searchedContent.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        #self.ui.searchedContent.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.ui.searchedContent.setWidgetResizable(True)
 
         self._station_icon_default = QPixmap("../../img/empty_icon.png")
