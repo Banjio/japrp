@@ -98,3 +98,12 @@ def test_vlc_set_volume():
 
     backend.set_volume(100)
     sleep(_SLEEP_TIMER)
+
+def test_vlc_get_meta():
+    url = "https://swr-swr3-live.cast.addradio.de/swr/swr3/live/aac/96/stream.aac"
+    # url = "http://mp3-live.swr3.de/swr3_m.m3u"
+    backend.get_volume()
+    backend.set_media(url, media_type="infer")
+    backend.get_meta_data(url)
+
+    sleep(_SLEEP_TIMER)

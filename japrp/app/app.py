@@ -32,7 +32,7 @@ class Japrp(QMainWindow):
         self.ui.stop.clicked.connect(self.stop_playing)
 
         self.ui.searchedContent.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.ui.searchedContent.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.ui.searchedContent.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
         self.ui.searchedContent.setWidgetResizable(True)
 
         self._station_icon_default = QPixmap("../../img/empty_icon.png")
@@ -79,7 +79,9 @@ class Japrp(QMainWindow):
                 if icon_decoded.ok:
                     qp = QPixmap()
                     qp.loadFromData(icon_decoded.content)
+                    qp.scaled(1, 1, Qt.IgnoreAspectRatio)
                     self.ui.sender_icon.setPixmap(qp)
+                    self.ui.sender_icon.setScaledContents(True)
                 else:
                     self.ui.sender_icon.setPixmap(self._station_icon_default)
 

@@ -1,6 +1,7 @@
 from typing import Union
 import vlc
 from japrp.audio_backends.audio_backends import AudiostreamBackend
+import requests
 
 
 class VlcBackend(AudiostreamBackend):
@@ -79,3 +80,9 @@ class VlcBackend(AudiostreamBackend):
             return self.media_player.get_media_player().audio_get_volume()
         else:
             return self.media_player.audio_get_volume()
+
+    def get_meta_data(self, url):
+        #https://stackoverflow.com/questions/41022893/monitoring-icy-stream-metadata-title-python
+        r = requests.get(url, stream=True)
+        headers, stream = r.headers, r.raw
+        print("Debug")
