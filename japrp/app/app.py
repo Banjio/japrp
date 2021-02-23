@@ -14,6 +14,7 @@ from functools import partial
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
 
+#https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
 class Japrp(QMainWindow):
 
     def __init__(self):
