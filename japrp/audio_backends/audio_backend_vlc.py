@@ -21,7 +21,7 @@ class VlcBackend(AudiostreamBackend):
         self._instance = vlc.Instance("--vout none " + cmd)
         self.media_player = self._instance.media_player_new()
         self._is_playlist = False
-        self._is_playing = False
+
 
     def set_media(self, url: str, media_type: Union[str, None] = 'infer'):
         """
@@ -45,10 +45,6 @@ class VlcBackend(AudiostreamBackend):
             self.media.parse()
             self.media_player.set_media(self.media)
             self._is_playlist = False
-
-
-    def get_is_playing(self):
-        return self._is_playing
 
     def play(self):
         """

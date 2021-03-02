@@ -13,6 +13,10 @@ class AudiostreamBackend(ABC):
         self._PLAYLIST_FORMATS = {"psu", "m3u", "m3u8"}
         self.media_player = None
         self.media = None
+        self._is_playing = False
+
+    def get_is_playing(self):
+        return self._is_playing
 
     def play(self):
         """
