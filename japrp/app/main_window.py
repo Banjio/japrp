@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'main_window.ui'
+# Form implementation generated from reading ui file 'ui_templates/main_window.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.2
 #
@@ -12,7 +12,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
@@ -28,10 +27,11 @@ class Ui_MainWindow(object):
         self.searchbar.setObjectName("searchbar")
         self.searcherLayout.addWidget(self.searchbar)
         self.searchedContent = QtWidgets.QScrollArea(self.verticalLayoutWidget)
+        self.searchedContent.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.searchedContent.setWidgetResizable(True)
         self.searchedContent.setObjectName("searchedContent")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 365, 419))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 367, 414))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.searchedContent.setWidget(self.scrollAreaWidgetContents)
         self.searcherLayout.addWidget(self.searchedContent)
@@ -52,22 +52,26 @@ class Ui_MainWindow(object):
         self.volumeSlider.setObjectName("volumeSlider")
         self.playerLayout.addWidget(self.volumeSlider)
         self.playerButtons = QtWidgets.QHBoxLayout()
+        self.playerButtons.setSizeConstraint(QtWidgets.QLayout.SetNoConstraint)
         self.playerButtons.setObjectName("playerButtons")
-        self.stop = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
-        self.stop.setObjectName("stop")
-        self.playerButtons.addWidget(self.stop)
         self.play = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
         self.play.setObjectName("play")
         self.playerButtons.addWidget(self.play)
+        self.stop = QtWidgets.QPushButton(self.verticalLayoutWidget_3)
+        self.stop.setObjectName("stop")
+        self.playerButtons.addWidget(self.stop)
         self.playerLayout.addLayout(self.playerButtons)
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 29))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 25))
         self.menubar.setObjectName("menubar")
+        self.menufile = QtWidgets.QMenu(self.menubar)
+        self.menufile.setObjectName("menufile")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.menubar.addAction(self.menufile.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -77,5 +81,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.sender_icon.setText(_translate("MainWindow", "TextLabel"))
         self.sender_name.setText(_translate("MainWindow", "TextLabel"))
-        self.stop.setText(_translate("MainWindow", "Play"))
-        self.play.setText(_translate("MainWindow", "Stop"))
+        self.play.setText(_translate("MainWindow", "Play"))
+        self.stop.setText(_translate("MainWindow", "Stop"))
+        self.menufile.setTitle(_translate("MainWindow", "File"))

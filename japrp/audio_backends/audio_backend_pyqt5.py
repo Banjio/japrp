@@ -1,4 +1,4 @@
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtCore import QUrl
 from japrp.audio_backends.audio_backends import AudiostreamBackend
 
@@ -25,6 +25,10 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
             media_type = self._infer_url_type(url)
         if media_type in self._PLAYLIST_FORMATS:
             # A possible solution for this problem is here: https://github.com/ivareske/QtInternetRadio
+            self.media = QMediaPlaylist()
+            self.media.addMedia(QMediaContent(QUrl(url)))
+            self.media.setCurrentIndex(1)
+            self.media_player.setPlaylist(self.media)
             raise NotImplementedError("Currently QtMediaPlayerWrapper does not support m3u streams natively. Use the vlc backend for this kind of streams")
         elif media_type not in ('mp3', ):
             raise NotImplementedError("Currently QtMediaPlayerWrapper does not support streams other than mp3 natively. Use the vlc backend for this kind of streams")

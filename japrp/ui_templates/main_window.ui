@@ -29,6 +29,9 @@
      </item>
      <item>
       <widget class="QScrollArea" name="searchedContent">
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustToContents</enum>
+       </property>
        <property name="widgetResizable">
         <bool>true</bool>
        </property>
@@ -37,8 +40,8 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>365</width>
-          <height>419</height>
+          <width>367</width>
+          <height>414</height>
          </rect>
         </property>
        </widget>
@@ -79,15 +82,18 @@
      </item>
      <item>
       <layout class="QHBoxLayout" name="playerButtons">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetNoConstraint</enum>
+       </property>
        <item>
-        <widget class="QPushButton" name="stop">
+        <widget class="QPushButton" name="play">
          <property name="text">
           <string>Play</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="play">
+        <widget class="QPushButton" name="stop">
          <property name="text">
           <string>Stop</string>
          </property>
@@ -104,7 +110,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>29</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menufile">

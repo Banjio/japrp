@@ -2,6 +2,8 @@ from typing import Union
 import vlc
 from japrp.audio_backends.audio_backends import AudiostreamBackend
 import requests
+import struct
+import re
 
 
 class VlcBackend(AudiostreamBackend):
@@ -44,6 +46,10 @@ class VlcBackend(AudiostreamBackend):
             self.media_player.set_media(self.media)
             self._is_playlist = False
 
+
+    def get_is_playing(self):
+        return self._is_playing
+
     def play(self):
         """
         Implement the play method used in vlc.player.play() with additional error handling
@@ -61,8 +67,9 @@ class VlcBackend(AudiostreamBackend):
         """
         Implement the pause method used in vlc.player.pause()
         """
-        self.media_player.pause()
-        self._is_playing = False
+        if self._is_playing:
+            self.media_player.pause()
+            self._is_playing = False
 
     def stop(self):
         self.media = None
@@ -82,7 +89,23 @@ class VlcBackend(AudiostreamBackend):
             return self.media_player.audio_get_volume()
 
     def get_meta_data(self, url):
+        #TODO: This only gets meta data for stations supporting the icy protocoll
+        #https: // cast.readme.io / docs / icy
         #https://stackoverflow.com/questions/41022893/monitoring-icy-stream-metadata-title-python
-        r = requests.get(url, stream=True)
+        r = requests.get(url, stream=True, headers={'Icy-MetaData': "1"})
         headers, stream = r.headers, r.raw
-        print("Debug")
+        icy_metaint_header = int(headers.get('icy-metaint'))
+        print(icy_metaint_header)
+        #for _ in range(10):  # # title may be empty initially, try several times
+        stream.read(icy_metaint_header)  # skip to metadata
+        metadata_length = struct.unpack('B', stream.read(1))[0] * 16  # length byte
+        metadata = stream.read(metadata_length).rstrip(b'\0')
+        print(metadata)
+            # extract title from the metadata
+        #m = re.search(br"StreamTitle='([^']*)';", metadata)
+        #    if m:
+        #        title = m.group(1)
+        #        if title:
+        #            print(title)
+        #    else:
+        #        pass

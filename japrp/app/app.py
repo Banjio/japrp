@@ -1,5 +1,6 @@
 import sys
 import requests
+import logging
 from io import StringIO, BytesIO
 from japrp.app.main_window import Ui_MainWindow
 from PyQt5.QtWidgets import *
@@ -13,7 +14,8 @@ from functools import partial
 
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 #https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
 class Japrp(QMainWindow):
 
@@ -67,6 +69,7 @@ class Japrp(QMainWindow):
 
         self.containerWidget.setLayout(self.containerLayout)
         self.ui.searchedContent.setWidget(self.containerWidget)
+        self.ui.searchedContent.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
     @pyqtSlot(int)
     def openPlayer(self, idx_widget):
@@ -76,8 +79,13 @@ class Japrp(QMainWindow):
         temp_icon_value = self.search_results[idx_widget].value.get("favicon")
         if temp_icon_value is not None:
             if len(temp_icon_value) > 0:
-                icon_decoded = requests.get(temp_icon_value)
-                if icon_decoded.ok:
+                url_ok = False
+                try:
+                    icon_decoded = requests.get(temp_icon_value, timeout=5)
+                    url_ok = icon_decoded.ok
+                except requests.RequestException as e:
+                    logger.exception("Icon Url was not ok because of exception %s" %e)
+                if url_ok:
                     qp = QPixmap()
                     qp.loadFromData(icon_decoded.content)
                     qp.scaled(1, 1, Qt.IgnoreAspectRatio)
@@ -96,21 +104,25 @@ class Japrp(QMainWindow):
             else:
                 self.ui.sender_name.setText(self._station_name_default)
 
-    @pyqtSlot()
+    #@pyqtSlot()
     def start_playing(self):
+
         # self.stream = subprocess.Popen(["python", "-m", "streamer_script.py"], stdout=sys.stdout)
-        if _BACKEND == "vlc":
-            if self.player.media_player.is_playing():
+        try:
+            if self.player.get_is_playing():
                 self.player.pause()
+                logger.debug("Pause player")
             else:
                 self.player.play()
-        else:
-            self.player.play()
-
+                logger.debug("Start playing")
+        except ValueError as ex:
+            logger.exception("Play was hit before a media was selected: %s" %ex)
     @pyqtSlot()
     def stop_playing(self):
-        if self.player is not None:
+        print("Stopping")
+        if self.player.media is not None or self.player is not None:
             self.player.stop()
+            logger.debug("Stop playing")
 
     @pyqtSlot()
     def set_volume(self):
