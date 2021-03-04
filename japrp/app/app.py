@@ -4,7 +4,7 @@ import logging
 from io import StringIO, BytesIO
 from japrp.app.main_window import Ui_MainWindow
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot, QTimer
 from PyQt5.QtGui import QPixmap
 from japrp.app_parts.qt_search import ClickableSearchResult
 from japrp.parser import RadioBrowserSimple
@@ -14,6 +14,7 @@ from functools import partial
 
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
+_SONG_UPDATE_TIMER = 30 * 1000
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 #https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
@@ -47,6 +48,21 @@ class Japrp(QMainWindow):
         self.ui.volumeSlider.setValue(100)
         self.ui.volumeSlider.valueChanged.connect(self.set_volume)
 
+        self.player_is_active = False
+
+        self.ui.song_title.setWordWrap(True)
+        self.timer = QTimer(self)
+        self.timer.timeout.connect(self.get_song_name)
+        self.timer.start(_SONG_UPDATE_TIMER)
+
+
+    def get_song_name(self):
+        print("Updating Song Title")
+        if self.player_is_active:
+            title = self.player.get_meta_data_icy(self.player.get_url())
+            self.ui.song_title.setText(title)
+        self.timer.start(_SONG_UPDATE_TIMER)
+
     @pyqtSlot()
     def search_radio(self):
         # To dynamically create and add to scroll area we need a container. We create the container inside the function, s.t. it is reseted between searchs
@@ -76,6 +92,7 @@ class Japrp(QMainWindow):
         self.player.stop()
         self.player.set_media(self.search_results[idx_widget].value["url"])
         self.player.play()
+        self.ui.song_title.setText("")
         temp_icon_value = self.search_results[idx_widget].value.get("favicon")
         if temp_icon_value is not None:
             if len(temp_icon_value) > 0:
@@ -88,7 +105,7 @@ class Japrp(QMainWindow):
                 if url_ok:
                     qp = QPixmap()
                     qp.loadFromData(icon_decoded.content)
-                    qp.scaled(1, 1, Qt.IgnoreAspectRatio)
+                    qp.scaled(2, 2, Qt.KeepAspectRatioByExpanding)
                     self.ui.sender_icon.setPixmap(qp)
                     self.ui.sender_icon.setScaledContents(True)
                 else:
@@ -103,6 +120,7 @@ class Japrp(QMainWindow):
                 self.ui.sender_name.setText(temp_station_name)
             else:
                 self.ui.sender_name.setText(self._station_name_default)
+        self.player_is_active = True
 
     #@pyqtSlot()
     def start_playing(self):
@@ -117,12 +135,14 @@ class Japrp(QMainWindow):
                 logger.debug("Start playing")
         except ValueError as ex:
             logger.exception("Play was hit before a media was selected: %s" %ex)
+
     @pyqtSlot()
     def stop_playing(self):
         print("Stopping")
         if self.player.media is not None or self.player is not None:
             self.player.stop()
             logger.debug("Stop playing")
+        self.player_is_active = False
 
     @pyqtSlot()
     def set_volume(self):

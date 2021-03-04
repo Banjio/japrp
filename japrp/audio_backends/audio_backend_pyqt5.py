@@ -21,6 +21,7 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
         :param media_type: type of the stream, e.g. mp3 or m3u or infer to infer the type
         """
         self._check_url(url)
+        self.set_url(url)
         if media_type == 'infer':
             media_type = self._infer_url_type(url)
         if media_type in self._PLAYLIST_FORMATS:

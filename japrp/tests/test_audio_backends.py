@@ -1,9 +1,10 @@
-from japrp.audio_backends import audio_backend_vlc, audio_backend_pyqt5
+from japrp.audio_backends import audio_backend_vlc, audio_backend_pyqt5, audio_backends
 from time import sleep
 import pytest
 _SLEEP_TIMER = 15
 backend = audio_backend_vlc.VlcBackend()
 backend_pyqt5 = audio_backend_pyqt5.QtMediaPlayerWrapper()
+backend_abstract = audio_backends.AudiostreamBackend()
 
 
 def test_vcl_m3u():
@@ -109,11 +110,8 @@ def test_vlc_set_volume():
     backend.set_volume(100)
     sleep(_SLEEP_TIMER)
 
-def test_vlc_get_meta():
-    #url = 'http://streams.radiobob.de/bob-christmas/aac-64/mediaplayer/'
-    url = "http://swr-swr3-live.cast.addradio.de/swr/swr3/live/mp3/128/stream.mp3"
-    backend.get_volume()
-    backend.set_media(url, media_type="infer")
-    backend.get_meta_data(url)
-
-    sleep(_SLEEP_TIMER)
+def test_backend_get_meta():
+    url = 'http://streams.radiobob.de/bob-christmas/aac-64/mediaplayer/'
+    #url = "http://swr-swr3-live.cast.addradio.de/swr/swr3/live/mp3/128/stream.mp3"
+    title = backend_abstract.get_meta_data_icy(url)
+    print(title)

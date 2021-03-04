@@ -32,6 +32,7 @@ class VlcBackend(AudiostreamBackend):
         :param media_type: type of the stream, e.g. mp3 or m3u
         """
         self._check_url(url)
+        self.set_url(url)
         if media_type == 'infer':
             media_type = self._infer_url_type(url)
         if media_type in self._PLAYLIST_FORMATS:
@@ -84,24 +85,3 @@ class VlcBackend(AudiostreamBackend):
         else:
             return self.media_player.audio_get_volume()
 
-    def get_meta_data(self, url):
-        #TODO: This only gets meta data for stations supporting the icy protocoll
-        #https: // cast.readme.io / docs / icy
-        #https://stackoverflow.com/questions/41022893/monitoring-icy-stream-metadata-title-python
-        r = requests.get(url, stream=True, headers={'Icy-MetaData': "1"})
-        headers, stream = r.headers, r.raw
-        icy_metaint_header = int(headers.get('icy-metaint'))
-        print(icy_metaint_header)
-        #for _ in range(10):  # # title may be empty initially, try several times
-        stream.read(icy_metaint_header)  # skip to metadata
-        metadata_length = struct.unpack('B', stream.read(1))[0] * 16  # length byte
-        metadata = stream.read(metadata_length).rstrip(b'\0')
-        print(metadata)
-            # extract title from the metadata
-        #m = re.search(br"StreamTitle='([^']*)';", metadata)
-        #    if m:
-        #        title = m.group(1)
-        #        if title:
-        #            print(title)
-        #    else:
-        #        pass

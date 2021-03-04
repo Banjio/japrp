@@ -1,4 +1,6 @@
 import logging
+import re
+import struct
 from abc import ABC
 import requests
 
@@ -14,9 +16,16 @@ class AudiostreamBackend(ABC):
         self.media_player = None
         self.media = None
         self._is_playing = False
+        self._url = ""
 
     def get_is_playing(self):
         return self._is_playing
+
+    def get_url(self):
+        return self._url
+
+    def set_url(self, url: str):
+        self._url = url
 
     def play(self):
         """
@@ -100,6 +109,30 @@ class AudiostreamBackend(ABC):
         :return: Int value of the volume
         """
         raise NotImplementedError
+
+    @staticmethod
+    def get_meta_data_icy(url, decoding="utf8"):
+        #TODO: This only gets meta data for stations supporting the icy protocoll
+        _RETRIES = 5
+        #https: // cast.readme.io / docs / icy
+        #https://stackoverflow.com/questions/41022893/monitoring-icy-stream-metadata-title-python
+        r = requests.get(url, stream=True, headers={'Icy-MetaData': "1"})
+        headers, stream = r.headers, r.raw
+        has_icy = True if headers.get('icy-metaint') is not None else False
+        icy_metaint_header = int(headers.get('icy-metaint', 0))
+        title = b""
+        while title == b"" and _RETRIES <= 5 and has_icy:  # # title may be empty initially, try several times
+            stream.read(icy_metaint_header)  # skip to metadata
+            metadata_length = struct.unpack('B', stream.read(1))[0] * 16  # length byte
+            metadata = stream.read(metadata_length).rstrip(b'\0')
+            # extract title from the metadata
+            m = re.search(br"StreamTitle='([^']*)';", metadata)
+            if m:
+                title = m.group(1)
+        return title.decode(decoding)
+
+
+
 if __name__ == "__main__":
     import time
     #URL = "http://bob.hoerradar.de/radiobob-hartesaite-mp3-hq?sABC=6020sp0s%230%23r731s0685son37qn82q119rrn30n0ss5%23zrqvncynlre&=&amsparams=playerid:mediaplayer;skey:1612774415"  # BBC
