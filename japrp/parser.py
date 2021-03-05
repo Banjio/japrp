@@ -1,5 +1,7 @@
+from typing import Tuple
 from pyradios import RadioBrowser
 from pprint import pprint
+
 
 
 class RadioBrowserSimple(RadioBrowser):
@@ -17,9 +19,14 @@ class RadioBrowserSimple(RadioBrowser):
     def search_filter_by_tag(self, name, tag):
         return self.search(name=name, tag=tag)
 
-    def search_filter_by_coded(self, name, codec):
-        codec = codec.upper()
-        return self.search(name=name, codec=codec)
+    def search_filter_by_codec(self, name, codecs: Tuple[str], **kwargs):
+        temp_res = self.search(name=name, **kwargs)
+        res_ = []
+        for codec in codecs:
+            ft = filter(lambda x: x["url"].split(".")[-1].upper().strip(" ") == codec.upper().strip(" "), temp_res)
+            res_.append(list(ft))
+        res_final = [item for sublist in res_ for item in sublist]
+        return res_final
 
     def search_station_no_proxy(self, name):
         temp_res = self.search(name=name)

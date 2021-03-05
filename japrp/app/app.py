@@ -12,7 +12,7 @@ from japrp.audio_backends.audio_backend_vlc import VlcBackend
 from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
 from functools import partial
 
-_BACKEND = "vlc"
+_BACKEND = "pyqt5"
 _SEARCH_LIMIT = 20
 _SONG_UPDATE_TIMER = 30 * 1000
 logging.basicConfig(level=logging.INFO)
@@ -72,7 +72,11 @@ class Japrp(QMainWindow):
             self.search_results = []
         if len(self.search_results) > 0:
             self.search_results = []
-        temp_search = self.searcher.search_limited(name=self.ui.searchbar.text(), limit=_SEARCH_LIMIT)
+        if _BACKEND == "vlc":
+            temp_search = self.searcher.search_limited(name=self.ui.searchbar.text(), limit=_SEARCH_LIMIT)
+        else:
+            _CODECS = ("mp3", "aac")
+            temp_search = self.searcher.search_filter_by_codec(self.ui.searchbar.text(), codecs=_CODECS, limit=_SEARCH_LIMIT)
         res = self.searcher.process_result(temp_search)
         for key, val in res.items():
             widget = ClickableSearchResult(key, val)
@@ -150,6 +154,7 @@ class Japrp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setStyle("Fusion")
     w = Japrp()
     w.show()
     sys.exit(app.exec())

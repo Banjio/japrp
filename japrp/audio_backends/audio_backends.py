@@ -116,21 +116,23 @@ class AudiostreamBackend(ABC):
         _RETRIES = 5
         #https: // cast.readme.io / docs / icy
         #https://stackoverflow.com/questions/41022893/monitoring-icy-stream-metadata-title-python
-        r = requests.get(url, stream=True, headers={'Icy-MetaData': "1"})
-        headers, stream = r.headers, r.raw
-        has_icy = True if headers.get('icy-metaint') is not None else False
-        icy_metaint_header = int(headers.get('icy-metaint', 0))
-        title = b""
-        while title == b"" and _RETRIES <= 5 and has_icy:  # # title may be empty initially, try several times
-            stream.read(icy_metaint_header)  # skip to metadata
-            metadata_length = struct.unpack('B', stream.read(1))[0] * 16  # length byte
-            metadata = stream.read(metadata_length).rstrip(b'\0')
-            # extract title from the metadata
-            m = re.search(br"StreamTitle='([^']*)';", metadata)
-            if m:
-                title = m.group(1)
-        return title.decode(decoding)
-
+        try:
+            r = requests.get(url, stream=True, headers={'Icy-MetaData': "1"}, timeout=10)
+            headers, stream = r.headers, r.raw
+            has_icy = True if headers.get('icy-metaint') is not None else False
+            icy_metaint_header = int(headers.get('icy-metaint', 0))
+            title = b""
+            while title == b"" and _RETRIES <= 5 and has_icy:  # # title may be empty initially, try several times
+                stream.read(icy_metaint_header)  # skip to metadata
+                metadata_length = struct.unpack('B', stream.read(1))[0] * 16  # length byte
+                metadata = stream.read(metadata_length).rstrip(b'\0')
+                # extract title from the metadata
+                m = re.search(br"StreamTitle='([^']*)';", metadata)
+                if m:
+                    title = m.group(1)
+            return title.decode(decoding)
+        except requests.RequestException:
+            return ""
 
 
 if __name__ == "__main__":

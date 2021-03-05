@@ -11,6 +11,7 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
         """
         super(QtMediaPlayerWrapper, self).__init__()
         self.media_player = QMediaPlayer()
+        self._is_playing = False
 
     def set_media(self, url, media_type: str = 'infer'):
         """
@@ -30,9 +31,12 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
             self.media.addMedia(QMediaContent(QUrl(url)))
             self.media.setCurrentIndex(1)
             self.media_player.setPlaylist(self.media)
-            raise NotImplementedError("Currently QtMediaPlayerWrapper does not support m3u streams natively. Use the vlc backend for this kind of streams")
-        elif media_type not in ('mp3', ):
-            raise NotImplementedError("Currently QtMediaPlayerWrapper does not support streams other than mp3 natively. Use the vlc backend for this kind of streams")
+            raise NotImplementedError(
+                "Currently QtMediaPlayerWrapper does not support m3u streams natively. Use the vlc backend for this kind of streams")
+        elif media_type not in ('mp3', 'acc'):
+            raise NotImplementedError(
+                "Currently QtMediaPlayerWrapper does not support streams other than mp3 natively, but %s was supplied."
+                ". Use the vlc backend for this kind of streams" %media_type)
         else:
             self.media = QMediaContent(QUrl(url))
             self.media_player.setMedia(self.media)
@@ -45,12 +49,14 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
             raise ValueError("Media must be set or no media can be played")
         else:
             self.media_player.play()
+            self._is_playing = True
 
     def pause(self):
         """
         call pyqt5.MediaPlayer().pause()
         """
         self.media_player.pause()
+        self._is_playing = False
 
     def stop(self):
         """
@@ -58,9 +64,16 @@ class QtMediaPlayerWrapper(AudiostreamBackend):
         """
         self.media = None
         self.media_player.stop()
+        self._is_playing = False
 
     def set_volume(self, value: int):
         """
         call pyqt5.MediaPlayer().setVolume(value)
         """
         self.media_player.setVolume(value)
+
+    def get_volume(self) -> int:
+        return self.media_player.volume()
+
+    def get_is_playing(self):
+        return self._is_playing
