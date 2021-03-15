@@ -10,7 +10,7 @@ import json
 
 class ClickableSearchResult(QWidget):
 
-    def __init__(self, name, value):
+    def __init__(self, name: str, value: dict):
         super().__init__()
         self.name_ref = name
         self.value = value

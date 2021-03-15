@@ -12,9 +12,9 @@ from japrp.audio_backends.audio_backend_vlc import VlcBackend
 from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
 from functools import partial
 
-_BACKEND = "pyqt5"
+_BACKEND = "vlc"
 _SEARCH_LIMIT = 20
-_SONG_UPDATE_TIMER = 30 * 1000
+_SONG_UPDATE_TIMER = 50 * 1000
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 #https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
@@ -45,7 +45,7 @@ class Japrp(QMainWindow):
 
         self.ui.sender_name.setText(self._station_name_default)
 
-        self.ui.volumeSlider.setValue(100)
+        self.ui.volumeSlider.setValue(self.player.get_volume())
         self.ui.volumeSlider.valueChanged.connect(self.set_volume)
 
         self.player_is_active = False
