@@ -14,6 +14,12 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
@@ -23,9 +29,19 @@
       <height>451</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="searcherLayout">
+    <layout class="QVBoxLayout" name="searcherLayout" stretch="0,0">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
      <item>
-      <widget class="QLineEdit" name="searchbar"/>
+      <widget class="QLineEdit" name="searchbar">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QScrollArea" name="searchedContent">
@@ -44,6 +60,12 @@
           <height>414</height>
          </rect>
         </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>2</horstretch>
+          <verstretch>2</verstretch>
+         </sizepolicy>
+        </property>
        </widget>
       </widget>
      </item>
@@ -52,17 +74,20 @@
    <widget class="QWidget" name="verticalLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>480</x>
+      <x>510</x>
       <y>40</y>
       <width>201</width>
       <height>451</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="playerLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetNoConstraint</enum>
+     </property>
      <item>
       <widget class="QLabel" name="sender_icon">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -70,15 +95,25 @@
        <property name="text">
         <string>TextLabel</string>
        </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer">
+      <widget class="QLabel" name="sender_name">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Expanding</enum>
        </property>
        <property name="sizeHint" stdset="0">
         <size>
@@ -89,16 +124,12 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="sender_name">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="song_title">
        <property name="text">
         <string>TextLabel</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
        </property>
       </widget>
      </item>
@@ -116,6 +147,12 @@
        </property>
        <item>
         <widget class="QPushButton" name="play">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="text">
           <string>Play</string>
          </property>

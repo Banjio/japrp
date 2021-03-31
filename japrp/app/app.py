@@ -4,17 +4,18 @@ import logging
 from io import StringIO, BytesIO
 from japrp.app.main_window import Ui_MainWindow
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSlot, QTimer
+from PyQt5.QtCore import Qt, pyqtSlot, QTimer, QThreadPool
 from PyQt5.QtGui import QPixmap
 from japrp.app_parts.qt_search import ClickableSearchResult
 from japrp.parser import RadioBrowserSimple
 from japrp.audio_backends.audio_backend_vlc import VlcBackend
 from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
 from functools import partial
+from japrp.app.qt_worker import Worker
 
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
-_SONG_UPDATE_TIMER = 50 * 1000
+_SONG_UPDATE_TIMER = 10 * 1000
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 #https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
@@ -52,16 +53,29 @@ class Japrp(QMainWindow):
 
         self.ui.song_title.setWordWrap(True)
         self.timer = QTimer(self)
+        self.timer.setInterval(_SONG_UPDATE_TIMER)
         self.timer.timeout.connect(self.get_song_name)
-        self.timer.start(_SONG_UPDATE_TIMER)
+        #self.timer.timeout.connect(self.set_song_name)
+        self.timer.start()
+
+        self.threadpool = QThreadPool()
+
+
+
 
 
     def get_song_name(self):
-        print("Updating Song Title")
         if self.player_is_active:
-            title = self.player.get_meta_data_icy(self.player.get_url())
-            self.ui.song_title.setText(title)
-        self.timer.start(_SONG_UPDATE_TIMER)
+            player_url = self.player.get_url()
+            worker = Worker(self.player.get_meta_data_icy, player_url)
+            worker.signals.result.connect(self.set_song_name)
+            self.threadpool.start(worker)
+
+    def set_song_name(self, s):
+        print("Update song title!")
+        if self.player_is_active:
+            self.ui.song_title.setText(s)
+
 
     @pyqtSlot()
     def search_radio(self):
