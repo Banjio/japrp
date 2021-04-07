@@ -2,69 +2,116 @@ import sys
 import requests
 import logging
 from io import StringIO, BytesIO
-from japrp.app.main_window import Ui_MainWindow
+from japrp_gui.app.main_window import Ui_MainWindow
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import Qt, pyqtSlot, QTimer, QThreadPool
+from PyQt5.QtCore import Qt, pyqtSlot, QTimer, QThreadPool, QRect
 from PyQt5.QtGui import QPixmap
-from japrp.app_parts.qt_search import ClickableSearchResult
-from japrp.parser import RadioBrowserSimple
-from japrp.audio_backends.audio_backend_vlc import VlcBackend
-from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
+from japrp_gui.app_parts.qt_search import ClickableSearchResult
+from japrp_core.parser import RadioBrowserSimple
+from japrp_core.audio_backends.audio_backend_vlc import VlcBackend
+from japrp_core.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
 from functools import partial
-from japrp.app.qt_worker import Worker
+from japrp_gui.app.qt_worker import Worker
+
+import qdarkstyle
 
 _BACKEND = "vlc"
 _SEARCH_LIMIT = 20
-_SONG_UPDATE_TIMER = 10 * 1000
-logging.basicConfig(level=logging.INFO)
+_SONG_UPDATE_TIMER = 25 * 1000
+logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 #https://github.com/baoboa/pyqt5/blob/master/examples/multimediawidgets/player.py how to make pyqt5 media playr work with playlist
 class Japrp(QMainWindow):
 
     def __init__(self):
         super(Japrp, self).__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-        self.search_results = []
-        self.searcher = RadioBrowserSimple()
-        if _BACKEND == "vlc":
-            self.player = VlcBackend()
-        else:
-            self.player = QtMediaPlayerWrapper()
-        self.ui.searchbar.returnPressed.connect(self.search_radio)
+        self.centralwidget = QWidget(self)
+        self.initialize_ui(self.centralwidget)
+        #self.ui = Ui_MainWindow()
+        # self.ui.setupUi(self)
+        # self.search_results = []
+        # self.searcher = RadioBrowserSimple()
+        # if _BACKEND == "vlc":
+        #     self.player = VlcBackend()
+        # else:
+        #     self.player = QtMediaPlayerWrapper()
+        # self.ui.searchbar.returnPressed.connect(self.search_radio)
+        #
+        # self.ui.play.clicked.connect(self.start_playing)
+        # self.ui.stop.clicked.connect(self.stop_playing)
+        #
+        # self.ui.searchedContent.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # self.ui.searchedContent.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # self.ui.searchedContent.setWidgetResizable(True)
+        #
+        # self._station_icon_default = QPixmap("../../img/empty_icon.png")
+        # self._station_name_default = ""
+        # self.ui.sender_icon.setPixmap(self._station_icon_default)
+        #
+        # self.ui.sender_name.setText(self._station_name_default)
+        #
+        # self.ui.volumeSlider.setValue(self.player.get_volume())
+        # self.ui.volumeSlider.valueChanged.connect(self.set_volume)
+        #
+        # self.player_is_active = False
+        #
+        # self.ui.song_title.setWordWrap(True)
+        # self.timer = QTimer(self)
+        # self.timer.setInterval(_SONG_UPDATE_TIMER)
+        # self.timer.timeout.connect(self.get_song_name)
+        # #self.timer.timeout.connect(self.set_song_name)
+        # self.timer.start()
+        #
+        # self.threadpool = QThreadPool()
 
-        self.ui.play.clicked.connect(self.start_playing)
-        self.ui.stop.clicked.connect(self.stop_playing)
 
-        self.ui.searchedContent.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.ui.searchedContent.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        self.ui.searchedContent.setWidgetResizable(True)
+    def initialize_ui(self, central_widget):
+        #self.global_layout = QHBoxLayout()
+        self.searchbar_widget = self.initialize_searchbar(central_widget)
+        #self.global_layout.addWidget(self.searchbar_widget)
 
-        self._station_icon_default = QPixmap("../../img/empty_icon.png")
-        self._station_name_default = ""
-        self.ui.sender_icon.setPixmap(self._station_icon_default)
+    @staticmethod
+    def initialize_searchbar(central_widget):
+        verticalLayoutWidget = QWidget(central_widget)
+        verticalLayoutWidget.setGeometry(QRect(110, 40, 371, 451))
+        verticalLayoutWidget.setObjectName("verticalLayoutWidget")
+        searcherLayout = QVBoxLayout()
+        searcherLayout.setSizeConstraint(QLayout.SetNoConstraint)
+        searcherLayout.setContentsMargins(0, 0, 0, 0)
+        searcherLayout.setObjectName("searcherLayout")
+        searchbar = QLineEdit(verticalLayoutWidget)
+        #sizePolicy = QSizePolicy(QSizePolicy.Expanding,QSizePolicy.Preferred)
+        #sizePolicy.setHorizontalStretch(0)
+        #sizePolicy.setVerticalStretch(0)
+        #sizePolicy.setHeightForWidth(self.searchbar.sizePolicy().hasHeightForWidth())
+        #self.searchbar.setSizePolicy(sizePolicy)
+        searchbar.setObjectName("searchbar")
+        searcherLayout.addWidget(searchbar)
+        searchedContent = QScrollArea(verticalLayoutWidget)
+        searchedContent.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+        searchedContent.setWidgetResizable(True)
+        searchedContent.setObjectName("searchedContent")
+        scrollAreaWidgetContents = QWidget()
+        scrollAreaWidgetContents.setGeometry(QRect(0, 0, 367, 414))
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(2)
+        sizePolicy.setVerticalStretch(2)
+        sizePolicy.setHeightForWidth(scrollAreaWidgetContents.sizePolicy().hasHeightForWidth())
+        scrollAreaWidgetContents.setSizePolicy(sizePolicy)
+        scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
+        searchedContent.setWidget(scrollAreaWidgetContents)
+        searcherLayout.addWidget(searchedContent)
+        return verticalLayoutWidget
 
-        self.ui.sender_name.setText(self._station_name_default)
-
-        self.ui.volumeSlider.setValue(self.player.get_volume())
-        self.ui.volumeSlider.valueChanged.connect(self.set_volume)
-
-        self.player_is_active = False
-
-        self.ui.song_title.setWordWrap(True)
-        self.timer = QTimer(self)
-        self.timer.setInterval(_SONG_UPDATE_TIMER)
-        self.timer.timeout.connect(self.get_song_name)
-        #self.timer.timeout.connect(self.set_song_name)
-        self.timer.start()
-
-        self.threadpool = QThreadPool()
-
-
+    def initialize_player(self):
+        pass
 
 
 
     def get_song_name(self):
+        logger.debug("Workers active %s" %self.threadpool.activeThreadCount())
+        if self.threadpool.maxThreadCount() == self.threadpool.activeThreadCount():
+            self.threadpool.waitForDone(5 * 1000)
         if self.player_is_active:
             player_url = self.player.get_url()
             worker = Worker(self.player.get_meta_data_icy, player_url)
@@ -72,7 +119,7 @@ class Japrp(QMainWindow):
             self.threadpool.start(worker)
 
     def set_song_name(self, s):
-        print("Update song title!")
+        logger.debug("Update song title!")
         if self.player_is_active:
             self.ui.song_title.setText(s)
 
@@ -168,7 +215,7 @@ class Japrp(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    app.setStyle("Fusion")
+    app.setStyleSheet(qdarkstyle.load_stylesheet(qt_api='pyqt5'))
     w = Japrp()
     w.show()
     sys.exit(app.exec())

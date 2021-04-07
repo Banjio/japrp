@@ -1,6 +1,6 @@
 from typing import Union
 import vlc
-from japrp.audio_backends.audio_backends import AudiostreamBackend
+from japrp_core.audio_backends.audio_backends import AudiostreamBackend
 
 
 class VlcBackend(AudiostreamBackend):

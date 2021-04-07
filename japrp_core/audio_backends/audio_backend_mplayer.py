@@ -1,4 +1,4 @@
-from japrp.audio_backends.audio_backends import AudiostreamBackend
+from japrp_core.audio_backends.audio_backends import AudiostreamBackend
 from mplayer.qt4 import QtPlayer
 from typing import Union
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 import sys
-sys.path.append("../../")
+import os
+import pathlib
+sys.path.append("../")
+print(os.path.abspath(os.curdir))
 from japrp.app.app import Japrp
 from PyQt5.QtWidgets import QApplication
 

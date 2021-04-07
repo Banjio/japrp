@@ -3,8 +3,8 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtCore
 from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QPainter
-from japrp.parser import RadioBrowserSimple
-from japrp.dict_viewer_pyqt5 import DictViewTree, DictTreeViewAsDialog
+from japrp_core.parser import RadioBrowserSimple
+from japrp_gui.app_parts.dict_viewer_pyqt5 import DictViewTree, DictTreeViewAsDialog
 from pprint import pprint
 import json
 

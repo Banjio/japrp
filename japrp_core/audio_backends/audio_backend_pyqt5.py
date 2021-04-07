@@ -1,6 +1,6 @@
 from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent, QMediaPlaylist
 from PyQt5.QtCore import QUrl
-from japrp.audio_backends.audio_backends import AudiostreamBackend
+from japrp_core.audio_backends.audio_backends import AudiostreamBackend
 
 
 class QtMediaPlayerWrapper(AudiostreamBackend):

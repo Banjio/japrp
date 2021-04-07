@@ -5,3 +5,4 @@ pyqt5==5.15.2
 requests
 python-vlc
 mplayer.py
+qdarkstlye

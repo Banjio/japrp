@@ -1,8 +1,8 @@
 import sys
 #sys.path.append("../")
 from PyQt5.QtWidgets import *
-from japrp.audio_backends.audio_backend_vlc import VlcBackend
-from japrp.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
+from japrp_core.audio_backends.audio_backend_vlc import VlcBackend
+from japrp_core.audio_backends.audio_backend_pyqt5 import QtMediaPlayerWrapper
 
 _BACKEND = "vlc"
 
