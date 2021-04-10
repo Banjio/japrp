@@ -36,6 +36,20 @@ def func(self, var: int):
 ```
 * Use ```from functools import partial``` to dynamically create buttons and connect them to a function with varying inputs
 
+## Desiging apps
+Best practice in desiging copied from [here](https://stackoverflow.com/questions/58247357/qt5-pyqt5-best-practices):
+
+"Generally, to minimise the complexity of UI elements (e.g. Main Window) and make applications more decoupled (thus, more maintainable), you can use the Model-View-Controller (MVC) pattern.
+
+In a typical use-case, each UI element (the 'view') is backed by a controller class and a model class. When a signal is triggered, the appropriate method on the controller is called. The controller method, in turn, calls a method on the model and/or changes another UI element.
+
+The above example presents a one-to-one association between view, controller, and model, but you can vary this according to your requirements.
+There are other modern derivatives of MVC (e.g. MVVM and MVP), but I prefer it because of its simplicity and also because the other patterns are more effective when the framework in use supports them."
+
+### Model View Controller
+[Guide](https://www.learnpyqt.com/tutorials/modelview-architecture/):
+
+
 # Link References (I.e. Cool Projects)
 
 * __Winamp Clone with Qt5__: https://www.learnpyqt.com/examples/failamp-multimedia-player/
