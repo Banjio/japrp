@@ -67,6 +67,16 @@ class Player(QWidget):
            self.player.stop()
 
 
+class JaprpPlayerView(QWidget):
+
+    def __init__(self):
+        pass
+
+class JaprpPlayerModel(object):
+
+    def __init__(self):
+        pass
+
 
 if __name__ == "__main__":
     URL = "http://bob.hoerradar.de/radiobob-hartesaite-mp3-hq?sABC=6020sp0s%230%23r731s0685son37qn82q119rrn30n0ss5%23zrqvncynlre&=&amsparams=playerid:mediaplayer;skey:1612774415"  # BBC

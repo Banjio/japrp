@@ -39,7 +39,7 @@ class RadioSeacherView(QWidget):
         self.model = RadioSeacherModel()
         #self.search_results = []
         self.searchbar = QLineEdit()
-
+        self.search_result = []
         # Scroll area, i.e. space where results are displayed
         self.scroll = QScrollArea()
         self.scroll.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -61,10 +61,9 @@ class RadioSeacherView(QWidget):
         scrollWidget = QWidget(self.scroll)
         scrollWidgetLayout = QVBoxLayout(scrollWidget)
         self.scroll.setWidget(scrollWidget)
-        for key, val in self.model.search_result.items():
-            widget = ClickableSearchResult(key, val)
-            #widget.play_btn.clicked.connect(lambda: self.openPlayer(widget))
-            scrollWidgetLayout.addWidget(widget)
+        self.search_result = [ClickableSearchResult(key, val) for key, val in self.model.search_result.items()]
+        for wi in self.search_result:
+            scrollWidgetLayout.addWidget(wi)
 
 
 class RadioSeacherModel(object):
