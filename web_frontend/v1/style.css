@@ -1,28 +1,33 @@
-<style>
-
-.song {clear:left; margin:1 0;}
-.song input {margin: 0 1em .5em 0;float:left;padding:0;}
-.song p {margin:0 0 1.5em 0;}
-.song:after {
-	content : ".";
-	display : block;
-	height : 0;
-	clear : left;
-	visibility : hidden;
-}
-
-audio{ margin:0;min-width:0}
-
-@media only screen and (min-device-width:768px) {
-	audio{max-width:75%;}
-}
-
-@media only screen 
-  and (min-device-width: 320px) 
-  and (max-device-width: 480px)
-  and (-webkit-min-device-pixel-ratio: 2)
-  and (orientation: portrait) {
-	audio{max-width:10em;}
-}
-
-</style>
+.active-pink-2 input[type=text]:focus:not([readonly]) {
+	border-bottom: 1px solid #f48fb1;
+	box-shadow: 0 1px 0 0 #f48fb1;
+  }
+  .active-pink input[type=text] {
+	border-bottom: 1px solid #f48fb1;
+	box-shadow: 0 1px 0 0 #f48fb1;
+  }
+  .active-purple-2 input[type=text]:focus:not([readonly]) {
+	border-bottom: 1px solid #ce93d8;
+	box-shadow: 0 1px 0 0 #ce93d8;
+  }
+  .active-purple input[type=text] {
+	border-bottom: 1px solid #ce93d8;
+	box-shadow: 0 1px 0 0 #ce93d8;
+  }
+  .active-cyan-2 input[type=text]:focus:not([readonly]) {
+	border-bottom: 1px solid #4dd0e1;
+	box-shadow: 0 1px 0 0 #4dd0e1;
+  }
+  .active-cyan input[type=text] {
+	border-bottom: 1px solid #4dd0e1;
+	box-shadow: 0 1px 0 0 #4dd0e1;
+  }
+  .active-cyan .fa, .active-cyan-2 .fa {
+	color: #4dd0e1;
+  }
+  .active-purple .fa, .active-purple-2 .fa {
+	color: #ce93d8;
+  }
+  .active-pink .fa, .active-pink-2 .fa {
+	color: #f48fb1;
+  }
