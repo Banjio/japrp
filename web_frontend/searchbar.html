@@ -8,30 +8,51 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="./search2.js"></script>
+        <!-- <script src="./search.js" type="module"></script> -->
     </head>
 <body>
     <div class="container">
-        <div class="row">
-            <h1>Radio Player</h1>
+        <div class="row" style="text-align:center;">
+            <h1 class="mb-3">Radio Player</h1>
         </div>
         <div class="row">
-            <!--<div class="col-sm-8">
-            <input type="search" class="form-control" id="searchbar-radio-player">
-            </div>
-            <div class="col-sm-4">
-                <button type="button" class="btn btn-primary" id="search-button">
-                <i class="fa fa-search"></i> This solution works but has a little gap between the beoxes the following solution is better
-            </button>
-            </div>-->
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search a radio station" id="search-field">
             <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="search-button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
+                    <button class="btn btn-primary"  type="button" id="search-button">
+                    <i class="fa fa-search"></i>
+                    </button>
+             </div>
             </div>
+            <!--Input with dropdown-->
+            <!-- <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search a radio station" id="search-field">
+            <div class="input-group-append">
+                <div class="btn-group dropright">
+                    <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" id="search-button">
+                    <i class="fa fa-search"></i>
+                    </button>
+
+                    <div id="search-dropdown", class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Content</a>
+                    </div>
+                </div>
+             </div>
+            </div> -->
         </div>
+        <div class="row" id="search-result">
+            <!-- <div class="row">
+                <a href="http://mp3channels.webradio.rockantenne.de/alternative.aac">ROCKANTENNE Alternative (64 kbps AAC)</a>
+            </div>
+            <div class="row">
+                <a href="http://mp3channels.webradio.rockantenne.de/alternative.aac">ROCKANTENNE Alternative (64 kbps AAC)</a>
+            </div> -->
+        </div>
+        <!-- <script type="text/javascript">$("#search-result").hide();</script> -->
+        <script src="./parser.js"></script>
     </div>
 </body>
 

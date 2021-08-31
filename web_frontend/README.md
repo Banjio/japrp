@@ -81,3 +81,45 @@ hervorgehobener</span> Text und dann geht es normal weiter
 
 * Must be included in head <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 * 
+
+# Javascript References
+
+## Basic Syntax
+
+* Defining variables:
+  * __Keywords__: `var, let, const`
+  * var is function scoped (only available in the scrope of a function) while let is block scoped  (scoped in enclosing brackeds {}). Const is immutable
+  * All use the same creation syntax ```var/let/const x = 5;```. Or when not assigning a value only creating the variable for later usage
+* __Functions__: 
+  * ```
+    function myFunction(p1, p2) {
+      return p1 * p2;   // The function returns the product of p1 and p2
+    }
+    ```
+  * Invokation example: ```let x = myFunction(4,3);```
+
+# Jquery
+
+## Basic Syntax 
+
+![](/home/maxbeier/ws/japrp/web_frontend/readme_pictures/jq_syntax.png)
+* Actions for the same selector can be chained, e.g. selector.hide().show()
+* Selector.text() &Rightarrow; Get text of selected elements
+* Selector.val() &Rightarrow; Get value of forms
+* Selector.html() &Rightarrow; Content of selected elements
+
+## Effects 
+* .hide(speed,callback);) / .show(speed,callback);) / .toggle(speed,callback) &Rightarrow; Shor or hide HTML Elements or toggle between hiding and showing
+  * __Speed__ for showing or hiding "slow", "fast", or milliseconds.
+  * __Callback__: Function hat is executed after showing hiding
+* __Fading__: Can be used to fadeIn() or fadeOut() Objects (EntireDivs can be faded in) -> Maybe this is a better way than the dropdown Menu as we can fadein entire divs
+* 
+# NPM 
+
+* Software manager, similiar to pip 
+
+# Radioplayer
+
+## Searchbar 
+
+* For searching the information we use Radio-Browser.infos implemented nodejs module: https://www.npmjs.com/package/radio-browser
