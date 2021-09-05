@@ -5,16 +5,18 @@ var testData = JSON.parse(JSON.stringify(testDataRaw))
 function createSearchListFromJson(data, lsId) {
     var tree = document.createDocumentFragment();
     for (item in data){
-        var tempElement = document.createElement("div")
-        tempElement.setAttribute("class", "row")
+        //var tempElement = document.createElement("div")
+        //tempElement.setAttribute("class", "row")
         var tempUrl = data[item]["url"]
         var tempName = data[item]["name"]
         var icon = data[item]["favicon"]
         var tempItem = document.createElement("a")
         tempItem.setAttribute("href", tempUrl)
         tempItem.appendChild(document.createTextNode(tempName))
-        tempElement.appendChild(tempItem)
-        tree.appendChild(tempElement)
+        //var tempBr = document.createElement("br")
+        tree.appendChild(tempItem)
+        //tree.appendChild(tempBr)
+        //tree.appendChild(tempElement)
     }
     document.getElementById(lsId).appendChild(tree)
 }

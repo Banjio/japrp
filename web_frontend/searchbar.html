@@ -7,10 +7,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://unpkg.com/@popperjs/core@2"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="./search2.js"></script>
+        <script src="./scripts/search2.js"></script>
         <!-- <script src="./search.js" type="module"></script> -->
     </head>
 <body>
@@ -40,10 +37,9 @@
                         <a class="dropdown-item" href="#">Content</a>
                     </div>
                 </div>
-             </div>
             </div> -->
         </div>
-        <div class="row" id="search-result">
+        <div class="row" id="search-result" style="border: solid 2px orange; height: 200px; width: 98.5%; overflow:auto;">
             <!-- <div class="row">
                 <a href="http://mp3channels.webradio.rockantenne.de/alternative.aac">ROCKANTENNE Alternative (64 kbps AAC)</a>
             </div>
@@ -52,7 +48,20 @@
             </div> -->
         </div>
         <!-- <script type="text/javascript">$("#search-result").hide();</script> -->
-        <script src="./parser.js"></script>
+        <script src="./scripts/parser.js"></script>
+        <div class="row" id="station-image">
+            <img src="./static/empty_icon.png" style="display:block; margin-left:auto; margin-right:auto;"></img> 
+        </div>
+        <div class="row" id="player">
+            <div class="btn-group" role="group" aria-label="audio player buttons">
+                <button type="button" class="btn btn-secondary" id="play-btn">
+                    <i class="fa fa-play"></i>
+                </button> 
+                <button type="button" class="btn btn-secondary" id="stop-btn">
+                    <i class="fa fa-stop"></i>
+                </button> 
+            </div>
+        </div>
     </div>
 </body>
 
