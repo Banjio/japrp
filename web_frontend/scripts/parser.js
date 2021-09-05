@@ -10,15 +10,17 @@ function createSearchListFromJson(data, lsId) {
         var tempUrl = data[item]["url"]
         var tempName = data[item]["name"]
         var icon = data[item]["favicon"]
-        var tempItem = document.createElement("a")
-        tempItem.setAttribute("href", tempUrl)
+        var liwrapper = document.createElement("li")
+        var tempItem = document.createElement("button")
+        tempItem.setAttribute("class", "btn btn-primary")
         tempItem.appendChild(document.createTextNode(tempName))
         //var tempBr = document.createElement("br")
-        tree.appendChild(tempItem)
+        liwrapper.appendChild(tempItem)
+        tree.appendChild(liwrapper)
         //tree.appendChild(tempBr)
         //tree.appendChild(tempElement)
     }
     document.getElementById(lsId).appendChild(tree)
 }
 
-createSearchListFromJson(testData, 'search-result')
+createSearchListFromJson(testData, 'search-result-ls')

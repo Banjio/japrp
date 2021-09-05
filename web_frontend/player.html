@@ -25,11 +25,23 @@
             <div class = "song" onclick="play(2)"> 
                 <input type="image" src="https://webdesign.weisshart.de/images/ndr2.png" width="120" height="55" alt="Stream: NDR 2">
                 <h3>NDR 2</h3>
-                <audio style="display:none" id ="2" src="https://br-br1-obb.cast.addradio.de/br/br1/obb/mp3/mid"  preload="none" >
+                <audio id ="2" src="https://br-br1-obb.cast.addradio.de/br/br1/obb/mp3/mid"  preload="none" >
                 </audio>
                 <p> ... und mit beliebig vielen Streams.
+                <audio controls id="player-controls" src="https://br-br1-obb.cast.addradio.de/br/br1/obb/mp3/mid" preload="none">
+                    
+                </audio>
+                <!---Layout for custom audio player <audio id="player" src="https://br-br1-obb.cast.addradio.de/br/br1/obb/mp3/mid" preload="none"></audio>
+                <div> 
+                    <button onclick="document.getElementById('player').play()">Play</button> 
+                    <button onclick="document.getElementById('player').pause()">Pause</button> 
+                    <button onclick="document.getElementById('player').volume += 0.1">Vol +</button> 
+                    <button onclick="document.getElementById('player').volume -= 0.1">Vol -</button> 
+                </div> -->
+
             </div>	
         </div>
+        
     </div>
 </body>
 
