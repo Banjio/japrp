@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1"> <!--Mobile optimised-->
+        <link  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="./scripts/player.js"></script>
+        <style type="text/css" src="static/player.css"></style>
+        <!-- <script src="./search.js" type="module"></script> -->
+    </head>
+<body>
+    <div class="container">
+        <div class="playlist_container">
+            <div class = "song" onclick="play(1)"> 
+                <input type="image" src="https://webdesign.weisshart.de/images/bayern_1.png" width="120" height="55" alt="Stream: Radio Bayern 1">
+                <h3>Radio Bayern 1</h3>
+                <audio style="display:none" id ="1" src="https://br-br1-obb.cast.addradio.de/br/br1/obb/mp3/mid"  preload="none" >
+                </audio>
+                <p> Das Ganze funktioniert natürlich auch mit einem Stream.
+            </div>	
+            
+            <div class = "song" onclick="play(2)"> 
+                <input type="image" src="https://webdesign.weisshart.de/images/ndr2.png" width="120" height="55" alt="Stream: NDR 2">
+                <h3>NDR 2</h3>
+                <audio style="display:none" id ="2" src="https://br-br1-obb.cast.addradio.de/br/br1/obb/mp3/mid"  preload="none" >
+                </audio>
+                <p> ... und mit beliebig vielen Streams.
+            </div>	
+        </div>
+    </div>
+</body>
+
+</html>
